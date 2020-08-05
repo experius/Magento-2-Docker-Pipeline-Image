@@ -1,0 +1,10 @@
+version: '3'
+services:
+  apache:
+    build: .
+    ports:
+      - 5000:80
+    volumes:
+      - ./src:/var/www/html
+      - ~/.composer:/var/www/.composer
+
