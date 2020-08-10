@@ -35,6 +35,7 @@ RUN apt-get update \
 	cron \
 	bash-completion \
 	rsync \
+	libjpeg-dev \
 	&& apt-get clean
 
 # Install Magento Dependencies
