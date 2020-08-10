@@ -33,6 +33,7 @@ RUN apt-get update \
 	tar \
 	cron \
 	bash-completion \
+	rsync \
 	&& apt-get clean
 
 # Install Magento Dependencies
