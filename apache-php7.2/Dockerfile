@@ -64,6 +64,10 @@ RUN apt-get update \
   	&& pecl install oauth \
   	&& echo "extension=oauth.so" > /usr/local/etc/php/conf.d/docker-php-ext-oauth.ini
 
+# Install ext-sockets
+
+RUN docker-php-ext-install sockets
+
 # Install Node, NVM, NPM and Grunt
 
 #RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
