@@ -11,7 +11,7 @@ RUN apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libfreetype6-dev \
 	libicu-dev \
-  libssl-dev \
+	libssl-dev \
 	libjpeg62-turbo-dev \
 	libmcrypt-dev \
 	libedit-dev \
@@ -41,7 +41,7 @@ RUN apt-get update \
 # Install Magento Dependencies
 
 RUN docker-php-ext-configure \
-  	gd --with-jpeg; \
+  	gd --with-jpeg --with-freetype; \
   	docker-php-ext-install \
   	opcache \
   	gd \
