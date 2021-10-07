@@ -106,6 +106,9 @@ COPY .docker/bin/* /usr/local/bin/
 COPY .docker/users/* /var/www/
 RUN chmod +x /usr/local/bin/*
 RUN ln -s /etc/apache2/sites-available/magento.conf /etc/apache2/sites-enabled/magento.conf
+RUN rm /etc/apache2/sites-enabled/000-default.conf
+RUN rm /etc/apache2/sites-available/default-ssl.conf
+RUN service apache2 restart
 
 RUN chmod 777 -Rf /var/www /var/www/.* \
 	&& chown -Rf www-data:www-data /var/www /var/www/.* \
