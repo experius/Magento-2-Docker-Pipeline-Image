@@ -1,4 +1,4 @@
-##  (2021-10-07)
+##  (2021-10-19)
 
 [View Release](git@github.com:experius/Magento-2-Docker-Pipeline-Image.git/commits/tag/)
 
@@ -22,5 +22,6 @@
 *  [FEATURE] Added Elastic 7.12.0 support for php7.4 *(Lewis Voncken)*
 *  [FEATURE] Set the document root to pub folder for 2.4 Support *(Mr. Lewis)*
 *  [BUGFIX] Solved issue with incorrect document root for Magento 2.4 *(Lewis Voncken)*
+*  [BUGFIX] Set composer version to 1.10.22 *(Lewis Voncken)*
 
 
