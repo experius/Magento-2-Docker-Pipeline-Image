@@ -1,4 +1,4 @@
-##  (2021-10-19)
+##  (2022-04-07)
 
 [View Release](git@github.com:experius/Magento-2-Docker-Pipeline-Image.git/commits/tag/)
 
@@ -23,5 +23,6 @@
 *  [FEATURE] Set the document root to pub folder for 2.4 Support *(Mr. Lewis)*
 *  [BUGFIX] Solved issue with incorrect document root for Magento 2.4 *(Lewis Voncken)*
 *  [BUGFIX] Set composer version to 1.10.22 *(Lewis Voncken)*
+*  [FEATURE] Added composer 2 php7.4 apache image *(René Schep)*
 
 
