@@ -127,7 +127,7 @@ ENV PATH="/var/www/.composer/vendor/bin/:${PATH}"
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install golang-go \
    && mkdir /opt/go \
    && export GOPATH=/opt/go \
-   && go get github.com/mailhog/mhsendmail
+   && go install github.com/mailhog/mhsendmail@latest
 
 
 # Configuring system
