@@ -5,75 +5,75 @@ MAINTAINER Experius <derrick@experius.nl>
 # Install System Dependencies
 
 RUN apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-	software-properties-common \
-	&& apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y \
-	libfreetype6-dev \
-	libicu-dev \
-	libssl-dev \
-	libjpeg62-turbo-dev \
-	libmcrypt-dev \
-	libedit-dev \
-	libedit2 \
-	libxslt1-dev \
-	libzip-dev \
-	libonig-dev \
-	zip \
-	apt-utils \
-	gnupg \
-	redis-tools \
-	default-mysql-client \
-	git \
-	vim \
-	wget \
-	curl \
-	lynx \
-	psmisc \
-	unzip \
-	tar \
-	cron \
-	bash-completion \
-	rsync \
-	libjpeg-dev \
-	gconf-service \
-	libasound2 \
-	libatk1.0-0 \
-	libc6 \
-	libcairo2 \
-	libcups2 \
-	libdbus-1-3 \
-	libexpat1 \
-	libfontconfig1 \
-	libgcc1 \
-	libgconf-2-4 \
-	libgdk-pixbuf2.0-0 \
-	libglib2.0-0 \
-	libgtk-3-0 \
-	libnspr4 \
-	libpango-1.0-0 \
-	libpangocairo-1.0-0 \
-	libstdc++6 \
-	libx11-6 \
-	libx11-xcb1 \
-	libxcb1 \
-	libxcomposite1 \
-	libxcursor1 \
-	libxdamage1 \
-	libxext6 \
-	libxfixes3 \
-	libxi6 \
-	libxrandr2 \
-	libxrender1 \
-	libxss1 \
-	libxtst6 \
-	ca-certificates \
-	fonts-liberation \
-	libappindicator1 \
-	libnss3 \
-	lsb-release \
-	xdg-utils \
-	&& apt-get clean
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    software-properties-common \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libfreetype6-dev \
+    libicu-dev \
+    libssl-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libedit-dev \
+    libedit2 \
+    libxslt1-dev \
+    libzip-dev \
+    libonig-dev \
+    zip \
+    apt-utils \
+    gnupg \
+    redis-tools \
+    default-mysql-client \
+    git \
+    vim \
+    wget \
+    curl \
+    lynx \
+    psmisc \
+    unzip \
+    tar \
+    cron \
+    bash-completion \
+    rsync \
+    libjpeg-dev \
+    gconf-service \
+    libasound2 \
+    libatk1.0-0 \
+    libc6 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libexpat1 \
+    libfontconfig1 \
+    libgcc1 \
+    libgconf-2-4 \
+    libgdk-pixbuf2.0-0 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libstdc++6 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    ca-certificates \
+    fonts-liberation \
+    libappindicator1 \
+    libnss3 \
+    lsb-release \
+    xdg-utils \
+    && apt-get clean
 
 # Install Magento Dependencies
 
@@ -107,13 +107,14 @@ RUN docker-php-ext-install sockets
 
 # Install Node and NPM
 
+ADD .docker/config/preferences /etc/apt/preferences
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs \
     && apt-get install -y npm
 
 # Install Composer
 
-RUN	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.3.3
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.3.3
 
 # Install Code Sniffer
 
@@ -145,11 +146,11 @@ RUN rm /etc/apache2/sites-available/default-ssl.conf
 RUN service apache2 restart
 
 RUN chmod 777 -Rf /var/www /var/www/.* \
-	&& chown -Rf www-data:www-data /var/www /var/www/.* \
-	&& usermod -u 1000 www-data \
-	&& chsh -s /bin/bash www-data\
-	&& a2enmod rewrite \
-	&& a2enmod headers
+    && chown -Rf www-data:www-data /var/www /var/www/.* \
+    && usermod -u 1000 www-data \
+    && chsh -s /bin/bash www-data\
+    && a2enmod rewrite \
+    && a2enmod headers
 
 VOLUME /var/www/html
 WORKDIR /var/www/html
