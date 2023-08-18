@@ -109,8 +109,7 @@ RUN docker-php-ext-install sockets
 
 ADD .docker/config/preferences /etc/apt/preferences
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get install -y npm
+    && apt-get install -y nodejs
 
 # Install Composer
 
