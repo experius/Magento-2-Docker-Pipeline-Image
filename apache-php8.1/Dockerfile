@@ -89,7 +89,8 @@ RUN docker-php-ext-configure \
     soap \
     xsl \
     zip \
-    sockets
+    sockets \
+    calendar
 
 # Install oAuth
 
