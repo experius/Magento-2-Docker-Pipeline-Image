@@ -1,0 +1,28 @@
+services:
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch
+      - discovery.type=single-node # Needed for CI/CD environments
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "plugins.security.disabled=true" # Disable security for pipelines
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD='aQua407!test'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200" # REST API port
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data # Persistent data storage
+    networks:
+      - opensearch-net
+
+volumes:
+  opensearch-data:
+
+networks:
+  opensearch-net:
