@@ -91,7 +91,7 @@ RUN docker-php-ext-configure \
     zip \
     sockets \
     calendar \
-    ext-ftp
+    ftp
 
 # Install oAuth
 
