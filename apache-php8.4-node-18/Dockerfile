@@ -90,7 +90,8 @@ RUN docker-php-ext-configure \
     xsl \
     zip \
     sockets \
-    calendar
+    calendar \
+    ext-ftp
 
 # Install oAuth
 
