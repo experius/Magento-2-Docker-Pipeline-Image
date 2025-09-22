@@ -25,6 +25,7 @@ RUN apt-get update \
 	bash-completion \
 	rsync \
     python3 \
+    python3-setuptools \
 	&& apt-get clean
 
 RUN install-php-extensions \
