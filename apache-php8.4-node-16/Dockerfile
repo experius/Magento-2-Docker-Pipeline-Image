@@ -24,6 +24,7 @@ RUN apt-get update \
 	cron \
 	bash-completion \
 	rsync \
+    python3 \
 	&& apt-get clean
 
 RUN install-php-extensions \
@@ -48,7 +49,7 @@ RUN install-php-extensions \
 # Install Node and NPM
 
 ADD .docker/config/preferences /etc/apt/preferences
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
 
 # Install Composer
