@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 # Install php extension dependencies
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -50,7 +50,7 @@ RUN install-php-extensions \
 # Install Node and NPM
 
 ADD .docker/config/preferences /etc/apt/preferences
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
 
 # Install Composer

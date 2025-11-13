@@ -1,85 +1,34 @@
 FROM php:8.4-apache
 
-MAINTAINER Experius <derrick@experius.nl>
+# Install php extension dependencies
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Install System Dependencies
+#MAINTAINER Experius <derrick@experius.nl>
+LABEL org.opencontainers.image.authors="matthijsbreed@happyhorizon.com"
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    software-properties-common \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    libfreetype6-dev \
-    libicu-dev \
-    libssl-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libedit-dev \
-    libedit2 \
-    libxslt1-dev \
-    libzip-dev \
-    libonig-dev \
-    zip \
-    apt-utils \
-    gnupg \
-    redis-tools \
-    default-mysql-client \
-    git \
-    vim \
-    wget \
-    curl \
-    lynx \
-    psmisc \
-    unzip \
-    tar \
-    cron \
-    bash-completion \
-    rsync \
-    libjpeg-dev \
-    gconf-service \
-    libasound2 \
-    libatk1.0-0 \
-    libc6 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libexpat1 \
-    libfontconfig1 \
-    libgcc1 \
-    libgconf-2-4 \
-    libgdk-pixbuf2.0-0 \
-    libglib2.0-0 \
-    libgtk-3-0 \
-    libnspr4 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libstdc++6 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxi6 \
-    libxrandr2 \
-    libxrender1 \
-    libxss1 \
-    libxtst6 \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator1 \
-    libnss3 \
-    lsb-release \
-    xdg-utils \
-    && apt-get clean
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	zip \
+	apt-utils \
+	gnupg \
+	redis-tools \
+	default-mysql-client \
+	git \
+	vim \
+	wget \
+	curl \
+	lynx \
+	psmisc \
+	unzip \
+	tar \
+	cron \
+	bash-completion \
+	rsync \
+	&& apt-get clean
 
-# Install Magento Dependencies
-
-RUN docker-php-ext-configure \
+RUN install-php-extensions \
     gd --with-jpeg --with-freetype; \
-    docker-php-ext-install \
+    install-php-extensions \
     opcache \
     gd \
     bcmath \
@@ -91,21 +40,10 @@ RUN docker-php-ext-configure \
     zip \
     sockets \
     calendar \
-    ftp
-
-# Install oAuth
-
-RUN apt-get update \
-    && apt-get install -y \
-    libpcre3 \
-    libpcre3-dev \
-    # php-pear \
-    && pecl install oauth \
-    && echo "extension=oauth.so" > /usr/local/etc/php/conf.d/docker-php-ext-oauth.ini
-
-# Install ext-sockets
-
-RUN docker-php-ext-install sockets
+    ftp \
+    oauth \
+    sockets \
+    openssl
 
 # Install Node and NPM
 
@@ -115,7 +53,7 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
 
 # Install Composer
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.3.3
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.8.11
 
 # Install Code Sniffer
 
