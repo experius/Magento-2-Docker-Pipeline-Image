@@ -28,6 +28,7 @@ RUN apt-get update \
     python3-setuptools \
 	&& apt-get clean
 
+RUN chmod +x /usr/local/bin/install-php-extensions
 RUN install-php-extensions \
     gd --with-jpeg --with-freetype; \
     install-php-extensions \
