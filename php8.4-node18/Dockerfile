@@ -27,7 +27,7 @@ RUN set -eux; \
     apt-get purge -y --auto-remove; \
     rm -rf /var/lib/apt/lists/*
 
-# 3. Install Node.js 16.x (for asset compilation)
+# 3. Install Node.js 18.x (for asset compilation)
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g yarn
