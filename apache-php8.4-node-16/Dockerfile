@@ -57,6 +57,9 @@ FROM php:8.4-apache
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
 
+# check node files
+RUN ls -l /usr/lib && ls -l /usr/local/bin
+
 # --- Copy all binaries from builder stage ---
 COPY --from=base_builder /usr/local/bin/composer /usr/local/bin/composer
 COPY --from=base_builder /usr/local/bin/phpcs /usr/local/bin/phpcs
@@ -64,10 +67,10 @@ COPY --from=base_builder /go/bin/mhsendmail /usr/local/bin/mhsendmail
 
 # Copy Node.js and NPM binaries/modules
 COPY --from=base_builder /usr/bin/node /usr/bin/node
-COPY --from=base_builder /usr/lib/bin/npm /usr/lib/bin/npm
-COPY --from=base_builder /usr/lib/bin/npx /usr/lib/bin/npx
-COPY --from=base_builder /usr/lib/bin/yarn /usr/lib/bin/yarn
-COPY --from=base_builder /usr/lib/lib/node_modules /usr/lib/lib/node_modules
+COPY --from=base_builder /usr/bin/npm /usr/bin/npm
+COPY --from=base_builder /usr/bin/npx /usr/bin/npx
+COPY --from=base_builder /usr/bin/yarn /usr/bin/yarn
+COPY --from=base_builder /usr/lib/node_modules /usr/lib/node_modules
 COPY --from=base_builder /usr/local/bin/install-php-extensions /usr/local/bin/install-php-extensions
 
 # --- Add config files from local context ---
