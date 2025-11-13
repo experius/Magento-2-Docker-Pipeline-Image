@@ -47,6 +47,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
     && apt-get purge -y --auto-remove golang-go \
     && rm -rf /var/lib/apt/lists/*
 
+ADD .docker/config/php.ini /usr/local/etc/php/php.ini
+ADD .docker/config/magento.conf /etc/apache2/sites-available/magento.conf
+COPY .docker/bin/* /usr/local/bin/
+COPY .docker/users/* /var/www/
+RUN chmod +x /usr/local/bin/*
+
 # --- Final setup ---
 WORKDIR /opt/atlassian/pipelines/agent/build
 ENV PATH="/root/.composer/vendor/bin/:${PATH}"
