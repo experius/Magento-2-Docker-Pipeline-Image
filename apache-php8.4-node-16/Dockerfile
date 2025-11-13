@@ -1,9 +1,10 @@
-# Dockerfile Refactored to eliminate circular dependency
+# Dockerfile Refactored for Nginx
 
 # ==============================================================================
 # STAGE 1: BUILDER (ASSET GENERATION)
 # ==============================================================================
-FROM php:8.4-apache AS base_builder
+# Changed base image to php:8.4-fpm (or just a non-webserver variant like cli/fpm)
+FROM php:8.4-fpm AS base_builder
 
 LABEL org.opencontainers.image.authors="matthijsbreed@happyhorizon.com"
 
@@ -52,7 +53,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
 # ==============================================================================
 # STAGE 2: FINAL IMAGE (RUNTIME)
 # ==============================================================================
-FROM php:8.4-apache
+# Changed base image to php:8.4-fpm
+FROM php:8.4-fpm
+
+# Install Nginx in the final stage
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends nginx; \
+    rm -rf /var/lib/apt/lists/*;
 
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
@@ -76,7 +84,8 @@ COPY --from=base_builder /usr/local/bin/install-php-extensions /usr/local/bin/in
 # --- Add config files from local context ---
 ADD .docker/config/preferences /etc/apt/preferences
 ADD .docker/config/php.ini /usr/local/etc/php/php.ini
-ADD .docker/config/magento.conf /etc/apache2/sites-available/magento.conf
+# Changed config file copy to Nginx site configuration
+ADD .docker/config/magento.conf /etc/nginx/sites-available/default
 ADD .docker/config/custom-xdebug.ini /usr/local/etc/php/conf.d/custom-xdebug.ini
 COPY .docker/bin/* /usr/local/bin/
 COPY .docker/users/* /var/www/
@@ -84,12 +93,13 @@ COPY .docker/users/* /var/www/
 # --- Configure system ---
 RUN set -eux; \
     chmod +x /usr/local/bin/*; \
-    ln -s /etc/apache2/sites-available/magento.conf /etc/apache2/sites-enabled/magento.conf; \
-    rm -f /etc/apache2/sites-enabled/000-default.conf; \
-    rm -f /etc/apache2/sites-available/default-ssl.conf; \
-    echo "ServerName localhost" >> /etc/apache2/apache2.conf; \
-    \
-    a2enmod rewrite headers; \
+    # Link Nginx config and remove default
+    ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default; \
+    # The following commands for apache are removed/changed
+    # rm -f /etc/apache2/sites-enabled/000-default.conf; \
+    # rm -f /etc/apache2/sites-available/default-ssl.conf; \
+    # echo "ServerName localhost" >> /etc/apache2/apache2.conf; \
+    # a2enmod rewrite headers; \
     \
     # Permission changes
     chmod 777 -Rf /var/www /var/www/.*; \
@@ -101,3 +111,6 @@ RUN set -eux; \
 ENV PATH="/var/www/.composer/vendor/bin/:${PATH}"
 VOLUME /var/www/html
 WORKDIR /var/www/html
+
+# Added Nginx as the primary execution command, starting PHP-FPM and Nginx
+CMD ["/bin/bash", "-c", "service php8.4-fpm start && nginx -g 'daemon off;'"]
