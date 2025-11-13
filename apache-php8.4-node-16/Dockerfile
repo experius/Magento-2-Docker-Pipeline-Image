@@ -1,7 +1,7 @@
 FROM php:8.4-apache
 
 # Install php extension dependencies
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 #MAINTAINER Experius <derrick@experius.nl>
 LABEL org.opencontainers.image.authors="matthijsbreed@happyhorizon.com"
