@@ -20,7 +20,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        zip apt-utils gnupg redis-tools default-mysql-client git wget curl lynx psmisc unzip tar cron bash-completion rsync python3 python3-setuptools libzip-dev; \
+        zip apt-utils gnupg redis-tools default-mysql-client git wget curl lynx psmisc unzip tar cron bash-completion rsync python3 python3-setuptools libzip-dev procps; \
     chmod +x /usr/local/bin/install-php-extensions; \
     install-php-extensions \
         gd opcache bcmath intl mbstring pdo_mysql soap xsl zip sockets calendar ftp oauth openssl; \
@@ -51,10 +51,6 @@ ADD .docker/config/php.ini /usr/local/etc/php/php.ini
 COPY .docker/bin/* /usr/local/bin/
 COPY .docker/users/* /var/www/
 RUN chmod +x /usr/local/bin/*
-
-# Creates a mock executable named tasklist.exe that runs the Linux 'ps' command.
-RUN echo -e '#!/bin/bash\nps "$@"' > /usr/local/bin/tasklist.exe \
-    && chmod +x /usr/local/bin/tasklist.exe
 
 # --- Final setup ---
 WORKDIR /opt/atlassian/pipelines/agent/build
