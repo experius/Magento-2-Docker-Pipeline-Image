@@ -62,8 +62,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install Code Sniffer
 
-RUN git clone https://github.com/magento/magento-coding-standard.git ~/.composer/vendor/magento/magento-coding-standard
-RUN cd ~/.composer/vendor/magento/magento-coding-standard && composer install
+RUN git clone https://github.com/magento/magento-coding-standard.git ~/.composer/vendor/magento/magento-coding-standard \
+    && cd ~/.composer/vendor/magento/magento-coding-standard \
+    && composer install --no-dev --no-interaction \
+    # Cleanup Composer cache and git metadata
+    && rm -rf ~/.composer/cache \
+    && rm -rf ~/.composer/vendor/magento/magento-coding-standard/.git \
+
 RUN ln -s ~/.composer/vendor/magento/magento-coding-standard/vendor/bin/phpcs /usr/local/bin;
 
 ENV PATH="/var/www/.composer/vendor/bin/:${PATH}"
