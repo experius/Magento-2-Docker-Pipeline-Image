@@ -6,7 +6,7 @@
 # Use a slim, non-webserver base image for maximum efficiency
 FROM php:8.4-cli AS ci_runner
 
-LABEL org.opencontainers.image.authors="matthijsbreed@happyhorizon.com"
+LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com"
 
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
@@ -51,6 +51,10 @@ ADD .docker/config/php.ini /usr/local/etc/php/php.ini
 COPY .docker/bin/* /usr/local/bin/
 COPY .docker/users/* /var/www/
 RUN chmod +x /usr/local/bin/*
+
+# Creates a mock executable named tasklist.exe that runs the Linux 'ps' command.
+RUN echo -e '#!/bin/bash\nps "$@"' > /usr/local/bin/tasklist.exe \
+    && chmod +x /usr/local/bin/tasklist.exe
 
 # --- Final setup ---
 WORKDIR /opt/atlassian/pipelines/agent/build
