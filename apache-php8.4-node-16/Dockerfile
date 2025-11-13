@@ -53,6 +53,8 @@ ADD .docker/config/preferences /etc/apt/preferences
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
 
+RUN npm install -g yarn
+
 # Install Composer
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.8.11
