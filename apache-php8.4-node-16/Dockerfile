@@ -64,10 +64,10 @@ COPY --from=base_builder /go/bin/mhsendmail /usr/local/bin/mhsendmail
 
 # Copy Node.js and NPM binaries/modules
 COPY --from=base_builder /usr/bin/node /usr/bin/node
-COPY --from=base_builder /usr/local/bin/npm /usr/local/bin/npm
-COPY --from=base_builder /usr/local/bin/npx /usr/local/bin/npx
-COPY --from=base_builder /usr/local/bin/yarn /usr/local/bin/yarn
-COPY --from=base_builder /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=base_builder /usr/lib/bin/npm /usr/lib/bin/npm
+COPY --from=base_builder /usr/lib/bin/npx /usr/lib/bin/npx
+COPY --from=base_builder /usr/lib/bin/yarn /usr/lib/bin/yarn
+COPY --from=base_builder /usr/lib/lib/node_modules /usr/lib/lib/node_modules
 COPY --from=base_builder /usr/local/bin/install-php-extensions /usr/local/bin/install-php-extensions
 
 # --- Add config files from local context ---
