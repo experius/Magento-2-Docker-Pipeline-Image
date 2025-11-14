@@ -33,9 +33,12 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 # 3. Install Node.js 16.x (for asset compilation)
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g yarn
+RUN set -eux; \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash -; \
+    apt-get install -y --no-install-recommends nodejs; \
+    npm install -g yarn; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*
 
 # 4. Install Composer & Code Sniffer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.8.11 \
