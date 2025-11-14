@@ -36,10 +36,10 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # Essential/Common
-        zip apt-utils gnupg wget curl psmisc unzip tar cron bash-completion rsync procps \
+        zip apt-utils gnupg wget curl unzip bash-completion rsync procps \
         # PHP related libs
         libzip-dev openssh-client redis-tools default-mysql-client \
-        git lynx python3 python3-setuptools nodejs; \
+        git nodejs; \
     \
     # Install PHP extensions
     install-php-extensions \
