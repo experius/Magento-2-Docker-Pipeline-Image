@@ -6,7 +6,12 @@
 # Use a slim, non-webserver base image for maximum efficiency
 FROM php:8.4-cli AS ci_runner
 
-LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com"
+LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com" \
+      org.opencontainers.image.title="php8.4-node16-ci" \
+      org.opencontainers.image.description="CI runner image for PHP 8.4 with Node 16, Composer 2, and Magento Coding Standard" \
+      org.opencontainers.image.source="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.created="2025-11-14"
 
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
@@ -47,11 +52,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
     && apt-get purge -y --auto-remove golang-go \
     && rm -rf /var/lib/apt/lists/*
 
+# --- Security: Create non-root user and set permissions ---
+RUN useradd -m -d /home/appuser -s /bin/bash appuser \
+    && mkdir -p /opt/atlassian/pipelines/agent/build \
+    && chown -R appuser:appuser /opt/atlassian/pipelines/agent/build /var/www /usr/local/bin /usr/local/etc/php /root /home/appuser
+
 ADD .docker/config/php.ini /usr/local/etc/php/php.ini
 COPY .docker/bin/* /usr/local/bin/
 COPY .docker/users/* /var/www/
 RUN chmod +x /usr/local/bin/*
 
 # --- Final setup ---
+USER appuser
 WORKDIR /opt/atlassian/pipelines/agent/build
 ENV PATH="/root/.composer/vendor/bin/:${PATH}"
