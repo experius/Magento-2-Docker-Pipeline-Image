@@ -1,7 +1,16 @@
-# Dockerfile.ci: Optimized for Bitbucket Pipelines
+# Dockerfile.ci: Optimized for Bitbucket Pipelines (Multi-Stage Refactor)
 
 # ==============================================================================
-# STAGE 1: CI RUNNER IMAGE
+# STAGE 1: MHSEMAIL BUILDER
+# Builds the Go binary in a minimal Go image and then discards the toolchain.
+# ==============================================================================
+FROM golang:1.21-alpine AS mhsendmail_builder
+
+# Install the mailhog sendmail binary
+RUN go install github.com/mailhog/mhsendmail@latest
+
+# ==============================================================================
+# STAGE 2: CI RUNNER IMAGE
 # ==============================================================================
 FROM php:8.4-cli AS ci_runner
 
@@ -12,13 +21,11 @@ LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.created="2025-11-14"
 
-# Set non-interactive mode and essential paths
+# Set non-interactive mode and essential paths (GOPATH is no longer needed)
 ENV DEBIAN_FRONTEND=noninteractive
-ENV GOPATH=/go
-ENV PATH="/usr/local/bin:$GOPATH/bin:${PATH}"
+ENV PATH="/usr/local/bin:${PATH}"
 
-# 1. Install PHP Extension Installer (via curl/pipe for minimal layer size)
-# 2. Install Dependencies, PHP Extensions, Node.js, Go, and Cleanup in ONE Layer
+# 1. Install Dependencies, PHP Extensions, Node.js, and Cleanup in ONE Layer
 RUN set -eux; \
     # Fetch and install the PHP extension installer
     curl -fsSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions; \
@@ -32,8 +39,7 @@ RUN set -eux; \
         zip apt-utils gnupg wget curl psmisc unzip tar cron bash-completion rsync procps \
         # PHP related libs
         libzip-dev openssh-client redis-tools default-mysql-client \
-        # Tools
-        git lynx python3 python3-setuptools golang-go nodejs; \
+        git lynx python3 python3-setuptools nodejs; \
     \
     # Install PHP extensions
     install-php-extensions \
@@ -41,16 +47,17 @@ RUN set -eux; \
     \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \
     \
-    # Install yarn globally and Mhsendmail (Go binary)
+    # Install yarn globally
     npm install -g yarn; \
-    go install github.com/mailhog/mhsendmail@latest; \
     \
     # Cleanup: Critical step for image size reduction
-    apt-get purge -y --auto-remove golang-go; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*; \
     # Remove the installer to save space since it's no longer needed
     rm -f /usr/local/bin/install-php-extensions
+
+# --- Copy the securely compiled Go binary from Stage 1 ---
+COPY --from=mhsendmail_builder /go/bin/mhsendmail /usr/local/bin/mhsendmail
 
 # --- Non-root user setup and Permissions (Combined into one layer) ---
 # Create non-root user 'appuser' and set necessary permissions for CI
@@ -64,8 +71,8 @@ RUN set -eux; \
         /usr/local/etc/php \
         /root \
         /home/appuser; \
-    # Chown only the specific mhsendmail binary location
-    chown -R appuser:appuser /go
+    # Chown the specific mhsendmail binary location
+    chown appuser:appuser /usr/local/bin/mhsendmail
 
 # Configuration and binaries (Remaining ADD/COPY steps)
 ADD .docker/config/php.ini /usr/local/etc/php/php.ini
