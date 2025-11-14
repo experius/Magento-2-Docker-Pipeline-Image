@@ -11,7 +11,13 @@ LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com" \
       org.opencontainers.image.description="CI runner image for PHP 8.4 with Node 16, Composer 2, and Magento Coding Standard" \
       org.opencontainers.image.source="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.created="2025-11-14"
+      org.opencontainers.image.created="2025-11-14" \
+      org.opencontainers.image.sbom-url="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image/releases/latest/download/sbom.spdx.json" \
+      org.opencontainers.image.provenance-url="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image/releases/latest/download/provenance.json"
+
+# Provenance attestation: Generate provenance for this image using Docker's --provenance=mode=max or cosign.
+# Example (Docker 23+): docker build --provenance=mode=max -t php8.4-node16 .
+# Upload the provenance file to your artifact repository or attach to your release.
 
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
