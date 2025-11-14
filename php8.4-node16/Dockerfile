@@ -12,7 +12,7 @@ LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com" \
       org.opencontainers.image.source="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.created="2025-11-14" \
-      org.opencontainers.image.sbom-url="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image/releases/latest/download/sbom.spdx.json" \
+      org.opencontainers.image.sbom-url="https://github.com/experius/Magento-2-Docker-Pipeline-Image/blob/feature/SCC-681/php8.4-node16/sbom.spdx.json" \
       org.opencontainers.image.provenance-url="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image/releases/latest/download/provenance.json"
 
 # Provenance attestation: Generate provenance for this image using Docker's --provenance=mode=max or cosign.
