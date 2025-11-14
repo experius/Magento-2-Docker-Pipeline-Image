@@ -6,8 +6,8 @@
 FROM php:8.4-cli AS ci_runner
 
 LABEL org.opencontainers.image.authors="dylanmaurits@happyhorizon.com" \
-      org.opencontainers.image.title="php8.4-node16-ci" \
-      org.opencontainers.image.description="CI runner image for PHP 8.4 with Node 16, Composer 2, and Magento Coding Standard" \
+      org.opencontainers.image.title="php8.4-node20-ci" \
+      org.opencontainers.image.description="CI runner image for PHP 8.4 with Node 20, Composer 2, and Magento Coding Standard" \
       org.opencontainers.image.source="https://github.com/happyhorizon/Magento-2-Docker-Pipeline-Image" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.created="2025-11-14"
@@ -24,8 +24,8 @@ RUN set -eux; \
     curl -fsSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions; \
     chmod +x /usr/local/bin/install-php-extensions; \
     \
-    # Install Node.js 16 and necessary system dependencies (Combined APT steps)
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash -; \
+    # Install Node.js 20 and necessary system dependencies (Combined APT steps)
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # Essential/Common
