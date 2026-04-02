@@ -1,7 +1,7 @@
 FROM php:8.3-apache
 
 # Install php extension dependencies
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 #MAINTAINER Experius <derrick@experius.nl>
 LABEL org.opencontainers.image.authors="matthijsbreed@happyhorizon.com"
@@ -28,6 +28,7 @@ RUN apt-get update \
     python3-setuptools \
 	&& apt-get clean
 
+    RUN chmod +x /usr/local/bin/install-php-extensions
 RUN install-php-extensions \
     gd --with-jpeg --with-freetype; \
     install-php-extensions \
