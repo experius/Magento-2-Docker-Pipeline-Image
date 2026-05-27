@@ -1,4 +1,4 @@
-##  (2025-11-13)
+##  (2026-04-17)
 
 [View Release](git@github.com:experius/Magento-2-Docker-Pipeline-Image.git/commits/tag/)
 
@@ -53,5 +53,9 @@
 *  [FEATURE][SCC-681] install yarn on docker image *(Dylan Maurits)*
 *  [FEATURE][SCC-681] installed yarn for pipeline images with node 16 or higher *(Dylan Maurits)*
 *  [FEATURE][SCC-681] Fixed file permissions *(Dylan Maurits)*
+*  [FEATURE][STJ-2377] Add php 8.3 with node 16 image *(Jordy Pouw)*
+*  [FEATURE][STJ-2377] Update DockerFille permissions install-php-extensions *(Jordy Pouw)*
+*  [FEATURE][MER-2093] Added Dockerfile for overwritten warden env *(René Schep)*
+*  [FEATURE][MER-2093] Removed failing command *(René Schep)*
 
 
